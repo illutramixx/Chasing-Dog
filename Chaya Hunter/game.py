@@ -33,8 +33,9 @@ title_surf = pygame.image.load('graphics/title.png').convert_alpha()
 title_surf = pygame.transform.scale(title_surf, (300,150))
 title_rect = title_surf.get_rect(center = (250, 600))
 
+player1 = Player()
 player = pygame.sprite.GroupSingle()
-player.add(Player())
+player.add(player1)
 
 chaya_group = pygame.sprite.Group()
 
@@ -63,9 +64,6 @@ def collision_player_chaya():
             hit = True
     return hit 
 
-time = False
-hit = True
-
 
 
 while True:
@@ -83,14 +81,8 @@ while True:
             if event.type == timer_event_id:
                 chaya_group.add(Objekte())
                 
-            if event.type == timer_nello:
-                if hit:
-                    time = True
-                else:
-                    time = False
         else: 
             print('lol')
-            #rocket_rect = rocket_surf.get_rect(center = (400, 200))
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE: 
                 running = True
                 print('hi')
@@ -103,17 +95,13 @@ while True:
         chaya_group.update()
         
         hit = collision_player_chaya()
-     
+        if hit:
+            player1.animation_state()
 
         player.draw(screen)
-        print(time)
-        player.update(hit, time)
+        player.update()
 
-        
-
-        
-
-        #screen.blit(nello_surf, nello_rect)   
+    
         
 
     else:

@@ -5,6 +5,9 @@ from random import randint, choice
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
+        self.is_animating = False
+        self.animation = 100
+
         nello_surf = pygame.image.load('nello.png').convert_alpha()
         nello_hit = pygame.image.load('nello_horny.png').convert_alpha()
         self.image1 = nello_hit
@@ -18,7 +21,7 @@ class Player(pygame.sprite.Sprite):
 
      
     def player_input(self):
-
+        
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE] and self.rect.bottom == 300:
             self.gravity = -20
@@ -31,16 +34,10 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_d] and self.rect.right <= 500:
             self.rect.x += self.speed       
      
-    def animation_state(self, hit, time):
-        if hit:
-            self.image = self.image1
-        else:
-            self.image = self.nello
+    def animation_state(self):
+        self.is_animating = True
             
-     
-
-
-
+ 
     def apply_gravity(self):
         self.gravity += 1
         self.rect.y += self.gravity
@@ -49,7 +46,16 @@ class Player(pygame.sprite.Sprite):
         
     
     
-    def update(self, hit, time):
-        self.animation_state(hit, time)
+    def update(self):
+        if self.is_animating == True and self.animation > 0:
+            self.image = self.image1
+            self.animation -= 1
+            print(self.animation)
+        else:
+            self.animation = 50
+            self.is_animating = False
+            self.image = self.nello
+            print('.........................--------------------------------------')
+       # self.animation_state(hit, time)
         self.player_input()
         self.apply_gravity()
