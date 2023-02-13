@@ -1,16 +1,21 @@
 import pygame
 
-from random import randint, choice
+import random 
 
 class Objekte(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, index):
         super().__init__()
 
-        chaya_1 = pygame.image.load('chaya1.png').convert_alpha()
-        chaya1_rect = chaya_1.get_rect(center = (20, 100))
+        chaya_1 = pygame.image.load('graphics/chaya1.png').convert_alpha()
+        chaya_2 = pygame.image.load('graphics/chaya2.png').convert_alpha()
+        chaya_3 = pygame.image.load('graphics/chaya3.png').convert_alpha()
+        self.chaya = [chaya_1, chaya_2, chaya_3]
+        self.chaya_index = index
+        self.image = self.chaya[self.chaya_index]
+        self.rect = self.image.get_rect(center = (random.randint(0, 500), 10))
+        
 
-        self.image = chaya_1
-        self.rect = chaya1_rect
+        
        
 
    # def animation_state(self):
