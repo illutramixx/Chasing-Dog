@@ -24,6 +24,7 @@ clock = pygame.time.Clock()
 
 pygame.font.init()
 
+item_font = pygame.font.SysFont('Impact', 20)
 #test_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 
 background_surf = pygame.image.load('graphics/background.png').convert()
@@ -57,23 +58,48 @@ item_event = pygame.USEREVENT + 2
 pygame.time.set_timer(item_event, item_interval)
 
 
-
 def collision_player_chaya():
     hit = False
     for chaya in chaya_group.sprites():
         if pygame.sprite.collide_rect(player.sprite, chaya):
             chaya.kill()
+            index = chaya.get_chaya()
+            count = player1.count_chaya(index)
+            print(count)
+
             hit = True
     return hit 
 
+
+timer = 0
+item_state = 0
+show_timer = -100
+item_hold = 0
 def collision_player_item():
-    hit = False
+    item_state = 0
     for i in item.sprites():
         if pygame.sprite.collide_rect(player.sprite, i):
-            i.item_effect()
+            
+           # player1.set_item(i.item_effect())
+            item_state = i.item_effect(player1)
             i.kill()
-            hit = True
-    return hit
+
+            
+
+    return item_state
+            
+    
+
+
+
+def collision_item_chaya():
+    for chaya in chaya_group.sprites():
+        for i in item.sprites():
+            if pygame.sprite.collide_rect(chaya, i):
+                i.kill()
+                chaya.kill()
+
+
 
 def move_background(scroll):
     
@@ -113,6 +139,7 @@ while True:
     if running:
         #screen.blit(background_surf, background_rect)
         scroll = move_background(scroll)
+        collision_item_chaya()
 
         chaya_group.draw(screen)
         chaya_group.update()
@@ -120,7 +147,21 @@ while True:
         item.draw(screen)
         item.update()
         
-        collision_player_item()
+        item_state = collision_player_item()
+        if item_state != 0:
+            show_timer = pygame.time.get_ticks()
+            item_hold = item_state
+   
+   
+        if pygame.time.get_ticks() - show_timer < 1500 and show_timer != -100: 
+            text = item_font.render(item_hold, False,  (255, 215, 0))
+            text_rect = text.get_rect(center = (player1.rect.centerx , player1.rect.centery - 40))
+            screen.blit(text, text_rect)
+        else:
+            show_timer = -100
+
+
+
         hit = collision_player_chaya()
         if hit:
             player1.animation_state()
@@ -128,11 +169,11 @@ while True:
         player.draw(screen)
         player.update()
 
-    
+        
         
 
     else:
-        print('hi')
+        screen.blit(start_surf, start_rect)
 
 
      

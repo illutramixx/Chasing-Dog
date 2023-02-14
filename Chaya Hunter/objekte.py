@@ -1,6 +1,7 @@
 import pygame
 
 import random 
+from player import Player
 
 class Objekte(pygame.sprite.Sprite):
     def __init__(self, index):
@@ -12,16 +13,15 @@ class Objekte(pygame.sprite.Sprite):
         self.chaya = [chaya_1, chaya_2, chaya_3]
         self.chaya_index = index
         self.image = self.chaya[self.chaya_index]
-        self.rect = self.image.get_rect(center = (random.randint(0, 500), 10))
-        
+        self.rect = self.image.get_rect(center = (random.randint(10, 490), 10))
+
+ 
+
+    def get_chaya(self):
+        return self.chaya_index
 
         
-       
 
-   # def animation_state(self):
-    #   self.animation_index += 0.1
-   #    if self.animation_index >= len(self.frames): self.animation_index = 0
-    #   self.image = self.frames[int(self.animation_index)]
 
     def update(self):
         #self.animation_state()
