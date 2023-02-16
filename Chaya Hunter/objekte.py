@@ -15,7 +15,11 @@ class Objekte(pygame.sprite.Sprite):
         self.image = self.chaya[self.chaya_index]
         self.rect = self.image.get_rect(center = (random.randint(10, 490), 10))
 
+        self.kosten = 150
+
  
+    def get_kosten(self):
+        return self.kosten
 
     def get_chaya(self):
         return self.chaya_index

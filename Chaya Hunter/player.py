@@ -34,11 +34,18 @@ class Player(pygame.sprite.Sprite):
         self.double_jump = 0
         self.fremdgehen = 0
 
-        self.geld = 0
+        self.geld = 500
     
     def add_geld(self, geld):
         self.geld += geld
         print('Konto: ' + str(self.geld))
+
+    def sub_geld(self, geld):
+        self.geld -= geld
+        print('Konto: ' + str(self.geld))
+    
+    def get_kontostand(self):
+        return self.geld
     
      
     def player_input(self):

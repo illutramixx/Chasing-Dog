@@ -60,14 +60,16 @@ pygame.time.set_timer(item_event, item_interval)
 
 def collision_player_chaya():
     hit = False
-    for chaya in chaya_group.sprites():
-        if pygame.sprite.collide_rect(player.sprite, chaya):
-            chaya.kill()
-            index = chaya.get_chaya()
-            count = player1.count_chaya(index)
-            print(count)
+    if player1.get_kontostand() >= 150:
+        for chaya in chaya_group.sprites():
+            if pygame.sprite.collide_rect(player.sprite, chaya):
+                chaya.kill()
+                index = chaya.get_chaya()
+                count = player1.count_chaya(index)
+                player1.sub_geld(chaya.get_kosten())
+                print(count)
 
-            hit = True
+                hit = True
     return hit 
 
 
@@ -114,6 +116,12 @@ def move_background(scroll):
 
     return scroll
 
+money_surf = pygame.image.load('graphics/geld.png').convert_alpha()
+def show_money():
+    money = item_font.render('x '+str(player1.get_kontostand()) , False,  (255, 215, 0))
+    money_rect = money.get_rect(center = (470,22))
+    screen.blit(money, money_rect)
+    screen.blit(money_surf, (money_rect.centerx -50, 10))
 
 while True:
     for event in pygame.event.get():
@@ -165,6 +173,8 @@ while True:
         hit = collision_player_chaya()
         if hit:
             player1.animation_state()
+
+        show_money()
 
         player.draw(screen)
         player.update()
